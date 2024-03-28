@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro e Pedido</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+       .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .form-control {
+        padding: 0.5rem;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid #ced4da;
+        transition: border-bottom-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        color: #495057; /* Cor do texto */
+        font-size: 1rem; /* Tamanho da fonte */
+
+        }
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: none;
+            box-shadow: none;
+        }
+        .form-control:focus ~ .floating-label,
+        .form-control:not(:placeholder-shown) ~ .floating-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            transform: translateY(-1.5rem) scale(0.75);
+        }
+        .floating-label {
+            position: absolute;
+            pointer-events: none;
+            left: 0.5rem;
+            top: calc(50% - 0.75rem);
+            transition: font-size 0.15s ease-in-out, transform 0.15s ease-in-out, color 0.15s ease-in-out;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cadastro</h1>
+    </header>
+
+    <main>
+         <section id="cadastro">
+            <h2>Cadastro</h2>
+            <form id="order" action="order.html" method="get">
+              <div>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" class="InputUser" required>
+              </div>
+              <div>
+                <label for="sobrenome">Sobrenome:</label>
+                <input type="text" id="sobrenome" name="sobrenome" class="InputUser" required>
+              </div>
+              <div>
+                <label for="data_nasc">Data de Nascimento:</label>
+                <input type="date" id="data_nasc" name="data_nasc" class="InputUser" required>
+              </div>
+              <div>
+                <label for="tel">Telefone:</label>
+                <input type="tel" id="tel" name="tel" class="InputUser" required>
+              </div>
+              <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="InputUser" required>
+              </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="cep">CEP:</label>
+                        <input type="number" class="form-control" id="cep" name="cep" required>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label></label>
+                        <button type="button" class="btn btn-primary" onclick="buscarEndereco()">Buscar</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="endereco" name="endereco" readonly>
+                    <label class="floating-label" for="endereco">Endereço</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="numero" name="numero" required>
+                    <label class="floating-label" for="numero">Número/Complemento</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="bairro" name="bairro" readonly>
+                    <label class="floating-label" for="bairro">Bairro</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="cidade" name="cidade" readonly>
+                    <label class="floating-label" for="cidade">Cidade</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="estado" name="estado" readonly>
+                    <label class="floating-label" for="estado">Estado</label>
+                </div>
+              
+                <button type="submit"> Enviar Dados </button>
+            </form>
+         </section>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        function buscarEndereco() {
+            var cep = document.getElementById('cep').value.replace(/\D/g, '');
+
+            $.getJSON('https://api.allorigins.win/get?url=https://viacep.com.br/ws/' + cep + '/json/', function(data) {
+                var response = JSON.parse(data.contents);
+                if (!response.erro) {
+                    var endereco = 'Rua: ' + response.logradouro + '<br>' +
+                                   'Bairro: ' + response.bairro + '<br>' +
+                                   'Cidade: ' + response.localidade + '<br>' +
+                                   'Estado: ' + response.uf;
+                    document.getElementById('endereco').value = endereco;
+                } else {
+                    document.getElementById('endereco').value = 'CEP não encontrado.';
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('.form-control').on('change', function() {
+                if ($(this).val()) {
+                    $(this).addClass('filled');
+                } else {
+                    $(this).removeClass('filled');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.querySelector('#order');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Impede o envio padrão do formulário
+                window.location.href = form.action; // Redireciona para a página de revisão do pedido
+            });
+        });
+    </script>
+</body>
+</html>
