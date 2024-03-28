@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboards de Vendas da Confeitaria</title>
+    <!-- Inclua a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Dashboards de Vendas da Confeitaria</h1>
+
+    <div>
+        <label for="ano">Selecione o ano:</label>
+        <select id="ano">
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <!-- Adicione mais anos conforme necessário -->
+        </select>
+    </div>
+
+    <div style="width: 90%;">
+        <!-- Gráfico de Linhas -->
+        <canvas id="lineChart"></canvas>
+    </div>
+
+    <div>
+        <label for="tipoProduto">Selecione o tipo de produto:</label>
+        <select id="tipoProduto">
+            <option value="massa">Massa</option>
+            <option value="recheio">Recheio</option>
+            <option value="decoracao">Decoração</option>
+            <option value="peso">Peso</option>
+        </select>
+    </div>
+
+    <div style="width: 90%;">
+        <!-- Gráfico de Barras -->
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <script>
+        // Dados de exemplo para os gráficos
+        var vendasMensais = {
+            '2023': [100, 120, 150, 180, 200, 220, 240, 260, 280, 300, 320, 350],
+            '2024': [120, 140, 170, 200, 220, 250, 270, 290, 310, 330, 350, 380]
+        };
+
+        var produtosVendidos = {
+            'massa': {
+                'Bolo de Chocolate': 150,
+                'Cupcake de Morango': 100,
+                'Torta de Limão': 200,
+                'Brigadeiro': 120
+            },
+            'recheio': {
+                'Brigadeiro': 200,
+                'Doce de Leite': 180,
+                'Ganache': 150,
+                'Nutella': 170
+            },
+            'decoracao': {
+                'Morangos': 250,
+                'Chantilly': 220,
+                'Confeitos Coloridos': 180,
+                'Pasta Americana': 200
+            },
+            'peso': {
+                '500g': 200,
+                '1kg': 180,
+                '1.5kg': 220,
+                '2kg': 190
+            }
+        };
+
+        var ctxLine = document.getElementById('lineChart').getContext('2d');
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+
+        // Função para atualizar o gráfico de linhas
+        function atualizarGraficoLinhas(anoSelecionado) {
+            var vendas = vendasMensais[anoSelecionado];
+            var meses = Array.from({ length: 12 }, (_, i) => i + 1);
+
+            var lineChart = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Vendas Mensais',
+                        data: vendas,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Função para atualizar o gráfico de barras
+        function atualizarGraficoBarras(tipoProdutoSelecionado) {
+            var produtos = Object.keys(produtosVendidos[tipoProdutoSelecionado]);
+            var quantidades = Object.values(produtosVendidos[tipoProdutoSelecionado]);
+
+            var barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: produtos,
+                    datasets: [{
+                        label: 'Vendas por Produto',
+                        data: quantidades,
+                        backgroundColor: 'rgb(54, 162, 235)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Atualizar gráficos quando o ano ou tipo de produto for alterado
+        document.getElementById('ano').addEventListener('change', function() {
+            var anoSelecionado = this.value;
+            atualizarGraficoLinhas(anoSelecionado);
+        });
+
+        document.getElementById('tipoProduto').addEventListener('change', function() {
+            var tipoProdutoSelecionado = this.value;
+            atualizarGraficoBarras(tipoProdutoSelecionado);
+        });
+
+        // Inicializar os gráficos com os valores padrão
+        var anoPadrao = document.getElementById('ano').value;
+        atualizarGraficoLinhas(anoPadrao);
+
+        var tipoProdutoPadrao = document.getElementById('tipoProduto').value;
+        atualizarGraficoBarras(tipoProdutoPadrao);
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão do Pedido</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Revisão do Pedido</h1>
+    </header>
+
+    <main>
+        <section id="pedido">
+            <h2>Detalhes do Pedido</h2>
+            <p>Nome: <span id="nome"></span></p>
+            <p>Sobrenome: <span id="sobrenome"></span></p>
+            <p>Endereço: <span id="endereco"></span></p>
+            <p>Número: <span id="numero"></span></p>
+            <p>Tel: <span id="tel"></span></p>
+            <p>Tipo: <span id="tipo"></span></p>
+            <p>Massa: <span id="massa"></span></p>
+            <p>Recheio: <span id="recheio"></span></p>
+            <p>Decoração: <span id="decoracao"></span></p>
+            <p>Peso: <span id="peso"></span></p>
+            <p>Mensagem: <span id="mensagem"></span></p>
+            <p>Data da Entrega: <span id="data_entrega"></span></p>
+            <p>Hora da Entrega: <span id="hora_entrega"></span></p>
+            <h3><p>Total do pedido: R$ <span id="total"></span></p></h3>
+            <a href="confirmacao.html?nome={{nome}}&sobrenome={{sobrenome}}&endereco={{endereco}}&tel={{tel}}&numero={{numero}}&tipo={{tipo}}&massa={{massa}}&recheio={{recheio}}&decoracao={{decoracao}}&peso={{peso}}&mensagem={{mensagem}}&data_entrega={{data_entrega}}&hora_entrega={{hora_entrega}}">Finalizar Pedido</a>
+        </section>
+    </main>
+
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var nome = urlParams.get('nome');
+        var sobrenome = urlParams.get('sobrenome');
+        var endereco = urlParams.get('endereco');
+        var numero = urlParams.get('numero');
+        var tel = urlParams.get('tel');
+        var tipo = urlParams.get('tipo');
+        var massa = urlParams.get('massa');
+        var recheio = urlParams.get('recheio');
+        var decoracao = urlParams.get('decoracao');
+        var mensagem = urlParams.get('mensagem');
+        var data_entrega = urlParams.get('data_entrega');
+        var hora_entrega = urlParams.get('hora_entrega');
+        document.getElementById('nome').innerText = nome;
+        document.getElementById('sobrenome').innerText = sobrenome;
+        document.getElementById('endereco').innerText = endereco;
+        document.getElementById('numero').innerText = numero;
+        document.getElementById('tel').innerText = tel;
+        document.getElementById('tipo').innerText = tipo;
+        document.getElementById('massa').innerText = massa;
+        document.getElementById('recheio').innerText = recheio;
+        document.getElementById('decoracao').innerText = decoracao;
+        document.getElementById('mensagem').innerText = mensagem;
+        document.getElementById('data_entrega').innerText = data_entrega;
+        document.getElementById('hora_entrega').innerText = hora_entrega;
+        
+    </script>
+</body>
+</html>
